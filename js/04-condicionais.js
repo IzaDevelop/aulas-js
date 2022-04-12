@@ -24,10 +24,17 @@ console.log(`Aluno: ${aluno}`);
 console.log(`Notas: ${nota1} e ${nota2}`);
 console.log(`Média: ${media}`);
 /* .toFixeed() limita a quantidade de casas decimais  */
+let faltas = 10;
+console.log(`Faltas: ${faltas}`);
 
 let situacao; /* undefined (indefinida) */
 
-if(media >= 7){
+/* utilizando apenas uma condição */
+// if(media >= 7){
+
+/* utilizado para avaliar duas condições ao mesmo tempo */
+/* && --> operador lógico E*/
+if(media >= 7 && faltas < 15){
     situacao = "Aprovado";
 } else {
     situacao = "Reprovado";
