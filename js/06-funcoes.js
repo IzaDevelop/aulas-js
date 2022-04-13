@@ -72,3 +72,11 @@ const dobra = numero => numero * 2;
 
 console.log(dobra(10));
 console.log(dobra(150))
+
+linha();
+let nota1 = 8.5;
+let nota2 = 7.4;
+
+const calcularMedia = (n1, n2) => (n1 + n2) / 2;
+
+console.log(calcularMedia(nota1, nota2));
