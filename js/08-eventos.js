@@ -21,5 +21,9 @@ const pagina = document.querySelector("body");
 
 botao.addEventListener("click", function(){
     pagina.classList.toggle("modo-noturno");
-    botao.textContent = "Desativar";
+    if(botao.textContent == 'Ativar') {
+        botao.textContent = 'Desativar';
+    } else {
+        botao.textContent = 'Ativar';
+    }
 });
