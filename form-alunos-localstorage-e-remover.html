@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Formulário com JavaScript</title>
+<style>
+    body { font-family: 'Segoe UI'; }
+    table {
+        width: 80%;
+        margin: auto;
+        border-collapse: collapse;
+    }
+    table, tr, td, th {
+        border: solid 1px black;
+    }
+    .aprovado { color: blue; }
+    .reprovado { color: red; }
+    .fadeOut { 
+        opacity: 0;
+        transition: 0.5s;
+    }
+</style>
+</head>
+<body>
+    
+<h1>Formulário com JavaScript (versão localStorage)</h1>
+<hr>
+<p><i>Dados são salvos no localStorage</i></p>
+
+
+<form action="" method="post">
+    <p>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required>
+    </p>
+    <p>
+        <label for="nome">Nota 1:</label>
+        <input type="number" id="nota1" min="0" max="10" step="0.1" required>
+        <label for="nome">Nota 2:</label>
+        <input type="number" id="nota2" min="0" max="10" step="0.1" required>
+    </p>
+    <button id="avaliar">Avaliar</button>
+</form>
+
+<div id="resultados"></div>
+    
+
+<script>
+var form = document.querySelector("form");
+var divResultados = document.querySelector("#resultados");
+
+/* Verificando se há dados no localStorage */
+if(localStorage.getItem('dados') !== null && localStorage.getItem("dados") !== '') {
+    divResultados.innerHTML = localStorage.getItem("dados");
+} else {
+    alert("Não há dados salvos!");
+}
+    
+form.onsubmit = function(event){
+    event.preventDefault();
+    
+    var inputNome = form.querySelector("#nome");
+    var inputNota1 = form.querySelector("#nota1");
+    var inputNota2 = form.querySelector("#nota2");
+    
+    var nome = inputNome.value;
+    var nota1 = parseFloat(inputNota1.value);
+    var nota2 = parseFloat(inputNota2.value);
+    
+    var media = calculaMedia(nota1, nota2); 
+    var situacao = verificaSituacao(media); 
+    
+    console.log(nome, nota1, nota2, media, situacao);
+    
+    mostrarResultados(nome, nota1, nota2, media, situacao);
+    
+    // Reset campos e foco para nome
+    this.reset();
+    inputNome.focus();
+    
+    // Salvar em localStorage
+    localStorage.setItem("dados", divResultados.innerHTML);
+}    
+    
+    
+function calculaMedia(nota1, nota2){
+    return (nota1 + nota2) / 2;
+}    
+    
+function verificaSituacao(media){
+    if(media >= 7){
+        return "aprovado";
+    } else {
+        return "reprovado";
+    }
+}
+
+function mostrarResultados(nome, nota1, nota2, media, situacao){
+    // 1) Criar um elemento HTML
+    var paragrafo = document.createElement("p");
+    
+    var linkRemover = "<a href=''>Remover</a>";
+    
+    // 2) Construir seu conteúdo
+    paragrafo.innerHTML = nome+": notas "+nota1+" e "+nota2+", média de "+media+" e está "+situacao+" - "+linkRemover;    
+    
+    // 3) Adicionar ao DOM
+    divResultados.appendChild(paragrafo);
+    
+    // 4) Adicionar a classe aprovado/reprovado
+    paragrafo.classList.add(situacao);
+    
+}
+
+/* Delegação de Eventos (listener ou normal, tanto faz)
+Aplicamos à div para que valha tanto para alunos existentes
+quanto para novos. */    
+//divResultados.addEventListener("click", function(event){
+divResultados.onclick = function(event){
+    event.preventDefault();
+     
+    //this.remove(); // remove a div inteira
+    //event.target.remove(); // remove somente o link ou a linha toda (depende de onde clicar)
+    //event.target.parentNode.remove(); // remove o pai de onde clicamos (qualquer lugar dentro div)
+    
+    // Para remover somente se clicarmos em uma tag A
+//    if (event.target.tagName == 'A') { // tem que ser maiuscula
+//        event.target.parentNode.remove()
+//        //console.log("apaga linha");
+//    } 
+    
+    //localStorage.setItem("dados", divResultados.innerHTML);  
+    
+    
+    if (event.target.tagName == 'A') { // tem que ser maiuscula
+        event.target.parentNode.classList.add("fadeOut");
+        setTimeout(function() {
+            event.target.parentNode.remove();
+            localStorage.setItem("dados", divResultados.innerHTML);        
+        }, 500);
+    }           
+//});
+}
+ 
+    
+    
+
+
+
+</script>
+</body>
+</html>
